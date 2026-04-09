@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    background: linear-gradient(120deg, #4e54c8, #8f94fb);
+    padding: 34px 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+">
+    <h2 style="font-weight: 700; margin-bottom: 6px;">Depression Detection Result</h2>
+    <p style="opacity: 0.92; font-size: 15px; margin: 0;">
+        Prediction summary, confidence analysis, and support guidance
+    </p>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .result-wrapper {
+        margin-top: 28px;
+        margin-bottom: 40px;
+    }
+
+    .result-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .result-card .card-body {
+        padding: 22px;
+    }
+
+    .text-card {
+        border: none;
+        border-radius: 18px;
+        background: #ffffff;
+    }
+
+    .text-card .card-body {
+        padding: 22px;
+    }
+
+    .entered-text-box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 16px;
+        line-height: 1.8;
+        word-wrap: break-word;
+        color: #333;
+        border: 1px solid #ececec;
+    }
+
+    .summary-card {
+        border: none;
+        border-radius: 16px;
+        text-align: center;
+        height: 100%;
+    }
+
+    .summary-card .card-body {
+        padding: 22px 14px;
+    }
+
+    .summary-card h6 {
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .summary-card p {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .section-heading {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        color: #1f2937;
+    }
+
+    .meter {
+        width: 100%;
+        background: #e9ecef;
+        border-radius: 30px;
+        overflow: hidden;
+        height: 28px;
+    }
+
+    .meter-fill {
+        height: 100%;
+        color: white;
+        text-align: center;
+        font-weight: 600;
+        line-height: 28px;
+    }
+
+    .low { background: #198754; }
+    .moderate { background: #fd7e14; }
+    .high { background: #dc3545; }
+
+    .support-box {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 22px;
+        border-left: 5px solid #0d6efd;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+
+    .support-box ul {
+        margin-top: 10px;
+        line-height: 1.9;
+        padding-left: 18px;
+    }
+
+    .chart-card,
+    .attention-card {
+        border: none;
+        border-radius: 18px;
+    }
+
+    .chart-card .card-body,
+    .attention-card .card-body {
+        padding: 22px;
+    }
+
+    .attention-box {
+        line-height: 2.2;
+    }
+
+    .attention-box span {
+        padding: 8px 12px;
+        margin: 4px;
+        border-radius: 8px;
+        display: inline-block;
+        color: white;
+        font-size: 14px;
+    }
+
+    .action-btn {
+        border-radius: 12px;
+        padding: 10px 18px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+        .summary-card p {
+            font-size: 20px;
+        }
+
+        .section-heading {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="container result-wrapper">
+
+    <div class="card shadow-sm text-card mb-4">
+        <div class="card-body">
+            <h4 class="mb-3 fw-bold">Entered Text</h4>
+            <div class="entered-text-box">
+                {{ text }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm summary-card">
+                <div class="card-body">
+                    <h6>Prediction</h6>
+                    <p class="text-primary">{{ prediction }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm summary-card">
+                <div class="card-body">
+                    <h6>Risk Level</h6>
+                    <p class="text-warning">{{ risk_label }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm summary-card">
+                <div class="card-body">
+                    <h6>Confidence</h6>
+                    <p class="text-success">{{  confidence  }}%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm summary-card">
+                <div class="card-body">
+                    <h6>Risk Score</h6>
+                    <p class="text-danger">{{ risk }}%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm result-card mb-4">
+        <div class="card-body">
+            <div class="section-heading">Risk Meter</div>
+            <div class="meter">
+                <div class="meter-fill
+                    {% if risk < 40 %}low
+                    {% elif risk < 70 %}moderate
+                    {% else %}high{% endif %}"
+                    style="width: {{ risk }}%;">
+                    {{ risk }}%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-box mb-4">
+        <h4 class="mb-3">Suggested Support</h4>
+
+        {% if risk >= 70 %}
+            <p><b>Immediate attention recommended.</b></p>
+            <p>
+                Your text shows strong signs of emotional distress. Please consider
+                reaching out to a mental health professional or someone you trust.
+            </p>
+            <ul>
+                <li>National Mental Health Helpline (India): <b>1800-599-0019</b></li>
+                <li>Emergency: <b>112</b></li>
+                <li>Talk to a trusted friend or family member</li>
+            </ul>
+
+        {% elif risk >= 40 %}
+            <p><b>Moderate emotional stress detected.</b></p>
+            <ul>
+                <li>Talk to someone you trust</li>
+                <li>Take breaks and rest properly</li>
+                <li>Engage in activities you enjoy</li>
+            </ul>
+
+        {% else %}
+            <p><b>You seem emotionally stable.</b></p>
+            <p class="mb-0">Keep maintaining healthy habits and a positive routine.</p>
+        {% endif %}
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm chart-card h-100">
+                <div class="card-body">
+                    <div class="section-heading">Confidence Chart</div>
+                    <canvas id="probChart" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm attention-card h-100">
+                <div class="card-body">
+                    <div class="section-heading">Attention Visualization</div>
+                    <div class="attention-box">
+                        {% for word, score in attention.items() %}
+                            <span style="background: rgba(255, 0, 0, {{ score }});">
+                                {{ word }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a class="btn btn-primary action-btn" href="{{ url_for('main.analyze') }}">
+    Analyze Another Text
+       </a>
+        <a class="btn btn-success action-btn" href="{{ url_for('main.contact') }}">
+            Contact Support
+        </a>
+        <a class="btn btn-dark action-btn" href="{{ url_for('main.evaluation') }}">
+            View Model Evaluation
+        </a>
+    </div>
+
+</div>
+
+<script>
+const positive = {{ positive | tojson }};
+const negative = {{ negative | tojson }};
+
+const ctx = document.getElementById("probChart");
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Not Depressed', 'Depressed'],
+        datasets: [{
+            label: 'Probability (%)',
+            data: [positive, negative],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#212529'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#212529' },
+                grid: { display: false }
+            },
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { color: '#212529' }
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

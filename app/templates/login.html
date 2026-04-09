@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .auth-section {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px;
+        background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 430px;
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .auth-header {
+        background: linear-gradient(120deg, #1c1f26, #2d3436);
+        color: white;
+        text-align: center;
+        padding: 22px;
+    }
+
+    .auth-body {
+        padding: 28px;
+        background: white;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 10px 12px;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #1c1f26;
+    }
+
+    .btn-auth {
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: 600;
+    }
+
+    .auth-footer-text {
+        text-align: center;
+        margin-top: 16px;
+        font-size: 14px;
+    }
+
+    .field-note {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+    .invalid-feedback {
+        display: none;
+        font-size: 13px;
+    }
+
+    .was-validated .form-control:invalid {
+        border-color: #dc3545;
+    }
+
+    .was-validated .form-control:invalid ~ .invalid-feedback {
+        display: block;
+    }
+</style>
+
+<div class="auth-section">
+    <div class="card shadow auth-card">
+        <div class="auth-header">
+            <h3 class="mb-1">Welcome Back</h3>
+            <p class="mb-0" style="font-size: 14px;">Login to continue</p>
+        </div>
+
+        <div class="auth-body">
+            <form method="POST" novalidate id="loginForm">
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email"
+                           class="form-control"
+                           name="email"
+                           value="{{ email or '' }}"
+                           required>
+                    <div class="field-note">Enter your registered email address</div>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password"
+                           class="form-control"
+                           name="password"
+                           required>
+                    <div class="invalid-feedback">
+                        Please enter your password.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark btn-auth w-100">Login</button>
+            </form>
+
+            <div class="auth-footer-text">
+                Don’t have an account?
+                <a href="{{ url_for('auth.register') }}">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+    const form = this;
+
+    if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    form.classList.add("was-validated");
+});
+</script>
+
+{% endblock %}

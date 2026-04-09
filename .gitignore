@@ -1,0 +1,11 @@
+*.pt
+*.csv
+data/
+results/
+__pycache__/
+*.pyc
+*.db
+instance/
+.vscode/
+training.ipynb - Colab_files/
+training.ipynb - Colab.htm

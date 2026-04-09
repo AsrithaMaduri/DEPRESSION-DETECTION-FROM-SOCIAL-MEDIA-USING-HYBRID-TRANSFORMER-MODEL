@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    background: linear-gradient(120deg, #232526, #414345);
+    padding: 36px 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+">
+    <h2 style="font-weight: 700; margin-bottom: 6px;">About Us</h2>
+    <p style="opacity: 0.9; font-size: 15px; margin: 0;">
+        Learn more about the purpose and features of this project
+    </p>
+</section>
+
+<style>
+    .about-wrapper {
+        margin-top: 28px;
+        margin-bottom: 40px;
+    }
+
+    .about-main-card,
+    .about-card {
+        border: none;
+        border-radius: 16px;
+    }
+
+    .about-main-card {
+        padding: 28px;
+    }
+
+    .about-card .card-body {
+        padding: 22px;
+    }
+
+    .about-card h4,
+    .about-main-card h3 {
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .about-card p,
+    .about-card li,
+    .about-main-card p {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .disclaimer-box {
+        background: #fff4f4;
+        border-left: 5px solid #dc3545;
+        padding: 14px;
+        border-radius: 10px;
+        margin-top: 12px;
+    }
+</style>
+
+<div class="container about-wrapper">
+
+    <div class="card shadow-sm about-main-card mb-4">
+        <h3>Project Overview</h3>
+        <p>
+            <b>Depression Detection from Social Media using Hybrid Transformer Models</b>
+            is a final year academic project developed to identify possible signs of depression
+            from social media text using NLP and transformer-based analysis.
+        </p>
+        <p>
+            The system is designed to analyze user-entered text and present prediction results,
+            confidence score, risk level, and helpful visual insights through a web interface.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm about-card h-100">
+                <div class="card-body">
+                    <h4>How It Works</h4>
+                    <p>
+                        The user enters text, and the system processes it using transformer-based methods
+                        to detect emotional patterns. After analysis, the application displays useful
+                        prediction outputs and graphical representations.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm about-card h-100">
+                <div class="card-body">
+                    <h4>Key Features</h4>
+                    <ul>
+                        <li>Depression risk prediction</li>
+                        <li>Confidence score visualization</li>
+                        <li>Risk level indication</li>
+                        <li>Attention-based word highlighting</li>
+                        <li>ROC curve and confusion matrix display</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm about-card h-100">
+                <div class="card-body">
+                    <h4>Project Goal</h4>
+                    <p>
+                        This project demonstrates how deep learning and NLP can be applied to
+                        mental health related text analysis in a research-oriented and user-friendly way.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm about-card h-100">
+                <div class="card-body">
+                    <h4>Developer</h4>
+                    <p>
+                        Developed by <b>ASRITHA & SRIJA</b><br>
+                        Final Year Project
+                    </p>
+
+                    <div class="disclaimer-box">
+                        <p class="mb-0 text-danger">
+                            This system is for educational purposes only and is not a substitute for
+                            professional mental health diagnosis or treatment.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

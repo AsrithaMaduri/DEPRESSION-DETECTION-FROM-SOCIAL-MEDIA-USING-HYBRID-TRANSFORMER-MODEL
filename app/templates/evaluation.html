@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+    padding: 34px 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+">
+    <h2 style="font-weight: 700; margin-bottom: 6px;">Model Evaluation</h2>
+    <p style="opacity: 0.9; font-size: 15px; margin: 0;">
+        Performance metrics and visualization of the trained model
+    </p>
+</section>
+
+<style>
+    .evaluation-wrapper {
+        margin-top: 28px;
+        margin-bottom: 40px;
+    }
+
+    .eval-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .eval-card .card-header {
+        padding: 14px 18px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .eval-card .card-body {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .eval-card img {
+        border-radius: 12px;
+        max-height: 320px;
+        object-fit: contain;
+    }
+
+    .eval-card p {
+        margin-top: 14px;
+        margin-bottom: 0;
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .summary-card {
+        border: none;
+        border-radius: 18px;
+        padding: 24px;
+    }
+
+    .summary-card h4 {
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .summary-card p {
+        margin-bottom: 0;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+</style>
+
+<div class="container evaluation-wrapper">
+
+    <div class="card shadow-sm summary-card mb-4">
+        <h4>Evaluation Summary</h4>
+        <p>
+            This section presents the major evaluation metrics and performance charts of the Hybrid Transformer model.
+            These visualizations help explain classification quality, training behavior, and comparative performance.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm eval-card">
+                <div class="card-header bg-success text-white">
+                    ROC Curve
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/roc_curve.png') }}" class="img-fluid" alt="ROC Curve">
+                    <p>Shows the model’s ability to separate classes at different threshold values.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm eval-card">
+                <div class="card-header bg-primary text-white">
+                    Confusion Matrix
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/confusion_matrix.png') }}" class="img-fluid" alt="Confusion Matrix">
+                    <p>Displays correct and incorrect predictions for both target classes.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm eval-card">
+                <div class="card-header bg-warning text-dark">
+                    Accuracy Graph
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/accuracy_graph.png') }}" class="img-fluid" alt="Accuracy Graph">
+                    <p>Illustrates the model accuracy trend during the training process.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm eval-card">
+                <div class="card-header bg-danger text-white">
+                    Loss Graph
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/loss_graph.png') }}" class="img-fluid" alt="Loss Graph">
+                    <p>Shows how the training loss decreases as the model learns over epochs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card shadow-sm eval-card">
+                <div class="card-header bg-dark text-white">
+                    Model Comparison
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/model_comparison.png') }}" class="img-fluid" alt="Model Comparison">
+                    <p>Compares the Hybrid Transformer against other baseline approaches.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

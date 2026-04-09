@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    background: linear-gradient(120deg, #1c1f26, #2d3436);
+    padding: 24px 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+">
+    <h2 style="font-weight: 700; margin-bottom: 4px;">Dashboard</h2>
+    <p style="opacity: 0.88; font-size: 14px; margin: 0;">
+        Monitor insights and access analysis tools
+    </p>
+</section>
+
+<style>
+.dashboard-wrapper {
+    margin-top: 24px;
+    margin-bottom: 36px;
+}
+
+.dashboard-card {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.dashboard-card .card-header {
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.dashboard-card .card-body {
+    padding: 20px;
+}
+
+.stats-card {
+    border: none;
+    border-radius: 18px;
+    text-align: center;
+    height: 100%;
+}
+
+.stats-card .card-body {
+    padding: 24px 12px;
+}
+
+.stats-card h5 {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stats-card p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.system-list .list-group-item {
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 15px;
+}
+
+.feature-box {
+    background: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.btn-dashboard {
+    border-radius: 12px;
+    padding: 11px 18px;
+    font-weight: 600;
+}
+
+.chart-preview {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.chart-preview .card-header {
+    padding: 12px 18px;
+    font-weight: 600;
+}
+
+.chart-preview .card-body {
+    padding: 16px;
+    text-align: center;
+}
+
+.chart-preview img {
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.section-mini-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+</style>
+
+<div class="container dashboard-wrapper">
+
+    <div class="row g-4 mb-2">
+        <div class="col-md-4">
+            <div class="card shadow-sm stats-card">
+                <div class="card-body">
+                    <h5>Total Predictions</h5>
+                    <p class="fs-2 text-primary">30</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm stats-card">
+                <div class="card-body">
+                    <h5>Model Accuracy</h5>
+                    <p class="fs-2 text-success">92%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm stats-card">
+                <div class="card-body">
+                    <h5>System Status</h5>
+                    <p class="fs-3 text-warning">Active</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-1">
+        <div class="col-lg-6">
+            <div class="card shadow-sm dashboard-card">
+                <div class="card-header bg-primary text-white">
+                    Start Analysis
+                </div>
+
+                <div class="card-body">
+                    <p style="font-size: 15px; line-height: 1.8;">
+                        Use the analysis module to enter social media text and obtain
+                        prediction results, confidence score, and risk assessment.
+                    </p>
+
+                    <div class="feature-box">
+                        <b>Available Outputs:</b> Prediction label, confidence level,
+                        risk meter, attention visualization, and performance insights.
+                    </div>
+
+                    <a href="{{ url_for('main.analyze') }}" class="btn btn-primary btn-dashboard w-100 mt-4">
+                        Go to Analyze Page
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm dashboard-card">
+                <div class="card-header bg-dark text-white">
+                    System Information
+                </div>
+
+                <div class="card-body">
+                    <ul class="list-group list-group-flush system-list">
+                        <li class="list-group-item">🤖 <b>Model:</b> Hybrid Transformer</li>
+                        <li class="list-group-item">📊 <b>Dataset:</b> Social Media Mental Health</li>
+                        <li class="list-group-item">🎯 <b>Task:</b> Binary Classification</li>
+                        <li class="list-group-item">📈 <b>Output:</b> Depression / Not Depression</li>
+                        <li class="list-group-item">📉 <b>Visualizations:</b> ROC, Confusion Matrix, Accuracy & Loss</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 mb-3 text-center">
+        <div class="section-mini-title">Performance Preview</div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm chart-preview">
+                <div class="card-header bg-success text-white">
+                    Confusion Matrix
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/confusion_matrix.png') }}"
+                         class="img-fluid"
+                         alt="Confusion Matrix">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm chart-preview">
+                <div class="card-header bg-warning text-dark">
+                    ROC Curve
+                </div>
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='charts/roc_curve.png') }}"
+                         class="img-fluid"
+                         alt="ROC Curve">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('main.evaluation') }}" class="btn btn-dark btn-dashboard px-4">
+            View Full Evaluation
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

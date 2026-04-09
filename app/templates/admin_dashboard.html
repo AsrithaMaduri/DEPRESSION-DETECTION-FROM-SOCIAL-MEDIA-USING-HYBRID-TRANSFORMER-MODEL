@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    background: linear-gradient(120deg, #111827, #1f2937);
+    padding: 28px 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+">
+    <h2 style="font-weight: 700; margin-bottom: 6px;">Admin Dashboard</h2>
+    <p style="opacity: 0.9; font-size: 15px; margin: 0;">
+        Manage users and monitor prediction activity
+    </p>
+</section>
+
+<style>
+.admin-wrapper {
+    margin-top: 28px;
+    margin-bottom: 40px;
+}
+
+.admin-stat-card {
+    border: none;
+    border-radius: 18px;
+    text-align: center;
+    height: 100%;
+}
+
+.admin-stat-card .card-body {
+    padding: 24px 14px;
+}
+.chart-box {
+    width: 260px;
+    height: 260px;
+    margin: 0 auto;
+    position: relative;
+}
+.admin-stat-card h5 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.admin-stat-card p {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.admin-card {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.admin-card .card-header {
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.admin-card .card-body {
+    padding: 20px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.badge-role {
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+}
+</style>
+
+<div class="container admin-wrapper">
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm admin-stat-card">
+                <div class="card-body">
+                    <h5>Total Users</h5>
+                    <p class="text-primary">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm admin-stat-card">
+                <div class="card-body">
+                    <h5>Total Admins</h5>
+                    <p class="text-success">{{ total_admins }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm admin-stat-card">
+                <div class="card-body">
+                    <h5>Total Predictions</h5>
+                    <p class="text-danger">{{ total_predictions }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm stat-card">
+            <div class="card-body">
+                <h5>Depressed Predictions</h5>
+                <p class="text-danger">{{ depressed_count }}</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="col-md-6">
+        <div class="card shadow-sm stat-card">
+            <div class="card-body">
+                <h5>Not Depressed Predictions</h5>
+                <p class="text-success">{{ not_depressed_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card shadow-sm admin-card mb-4">
+    <div class="card-header bg-info text-white">
+        Prediction Analytics
+    </div>
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center">
+    <div class="chart-box">
+        <canvas id="predictionChart"></canvas>
+    </div>
+    </div>
+            <div class="col-md-6">
+                <h5 class="mb-3">Analytics Summary</h5>
+                <p><strong>Depressed Predictions:</strong> {{ depressed_count }}</p>
+                <p><strong>Not Depressed Predictions:</strong> {{ not_depressed_count }}</p>
+                <p class="text-muted mb-0" style="font-size: 14px;">
+                    This graph gives the admin a quick overview of prediction distribution across all submitted records.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="card shadow-sm admin-card mb-4">
+        <div class="card-header bg-dark text-white">
+            Registered Users
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                {% if user.is_admin %}
+                                    <span class="badge bg-success badge-role">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-secondary badge-role">User</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.created_at %}
+                                    {{ user.created_at.strftime('%d-%m-%Y %I:%M %p') }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not user.is_admin %}
+                                <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                                      onsubmit="return confirm('Delete this user?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                                {% else %}
+                                    <span class="text-muted">Protected</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm admin-card">
+        <div class="card-header bg-primary text-white">
+            Prediction Records
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Input Text</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                            <th>Risk Score</th>
+                            <th>Risk Label</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in predictions %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.user.username if item.user else 'N/A' }}</td>
+                            <td>{{ item.input_text[:80] }}{% if item.input_text|length > 80 %}...{% endif %}</td>
+                            <td>{{ item.prediction }}</td>
+                            <td>{{ item.confidence }}%</td>
+                            <td>{{ item.risk_score }}%</td>
+                            <td>{{ item.risk_label }}</td>
+                            <td>{{ item.created_at.strftime('%d-%m-%Y %I:%M %p') }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">No prediction records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="card shadow-sm admin-card mt-4">
+    <div class="card-header bg-warning text-dark">
+        Contact Messages
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in messages %}
+                    <tr>
+                        <td>{{ msg.id }}</td>
+                        <td>{{ msg.name }}</td>
+                        <td>{{ msg.email }}</td>
+                        <td>{{ msg.subject }}</td>
+                        <td>{{ msg.message }}</td>
+                        <td>{{ msg.created_at.strftime('%d-%m-%Y %I:%M %p') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            No messages yet
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const dataValues = [
+        {{ depressed_count | default(0) | tojson }},
+        {{ not_depressed_count | default(0) | tojson }}
+    ];
+
+    const ctx = document.getElementById("predictionChart");
+
+    if (ctx) {
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ["Depressed", "Not Depressed"],
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: ["#dc3545", "#198754"],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "55%",
+                plugins: {
+                    legend: {
+                        position: "top"
+                    }
+                }
+            }
+        });
+    }
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+.hero{
+
+background: linear-gradient(120deg,#667eea,#764ba2);
+
+color:white;
+
+padding:120px 0;
+
+}
+
+.hero h1{
+
+font-weight:700;
+
+}
+
+.hero p{
+
+font-size:20px;
+
+}
+
+section{
+
+padding:40px;
+
+}
+
+footer{
+
+margin-top:60px;
+
+}

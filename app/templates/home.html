@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.hero {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.65),
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.68)
+        ),
+        url('https://images.unsplash.com/photo-1579208570378-8c970854bc23?w=1600&auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-top: -70px;
+    padding-top: 70px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 760px;
+    width: 90%;
+    padding-top: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 50px;
+    font-weight: 500;
+    line-height: 1.28;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 18px;
+}
+.subtitle {
+    text-align: right;          /* 👈 forces left alignment */
+    display: block;
+
+    margin-left: 0;            /* remove any centering */
+    margin-right: 0;
+
+    font-family: 'Great Vibes', cursive;
+    font-size: 30px;
+    text-shadow: 2px 2px 10px rgba(255,255,255,0.2);
+}
+
+.try-model-btn {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 40px;
+    font-size: 22px;
+    font-weight: 600;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.try-model-btn:hover {
+    transform: scale(1.05);
+    background: #0b5ed7;
+}
+
+.workflow-section {
+    margin-top: 80px;
+}
+
+.workflow-card {
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 30px 20px;
+    background: white;
+    transition: 0.3s;
+}
+
+.workflow-card:hover {
+    transform: translateY(-6px);
+}
+
+/* modal */
+.auth-modal-content {
+    border: none;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #111827, #1f2937);
+    color: white;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.28);
+}
+
+.auth-modal-title {
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.auth-modal-text {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.auth-modal-btn {
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        background-attachment: scroll;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .subtitle {
+        font-size: 22px;
+    }
+}
+</style>
+
+<div class="hero">
+    <div class="hero-content">
+        <h1>Every thought deserves to be understood</h1>
+        <p class="subtitle">Understanding emotions through your words</p>
+
+        <button type="button" class="try-model-btn" data-bs-toggle="modal" data-bs-target="#authModal">
+            Try the Model
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content auth-modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="modal-title auth-modal-title" id="authModalLabel">Get Started</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body text-center pb-4">
+                <p class="auth-modal-text">
+                    Login or register to use the depression detection system.
+                </p>
+
+                <div class="d-grid gap-3 mt-4">
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-light auth-modal-btn">
+                        Login
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light auth-modal-btn">
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container workflow-section mb-5">
+    <h2 class="text-center mb-5">System Workflow</h2>
+
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="workflow-card">
+                <h4>📝 Input Text</h4>
+                <p class="mt-3">Enter social media text reflecting thoughts and emotions.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="workflow-card">
+                <h4>🤖 AI Analysis</h4>
+                <p class="mt-3">The model detects emotional and depression-related patterns.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="workflow-card">
+                <h4>📊 Risk Insight</h4>
+                <p class="mt-3">View prediction, confidence, and visual insights.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

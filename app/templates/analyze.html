@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    background: linear-gradient(120deg, #3a7bd5, #3a6073);
+    padding: 34px 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+">
+    <h2 style="font-weight: 700; margin-bottom: 6px;">Analyze Text</h2>
+    <p style="opacity: 0.9; font-size: 15px; margin: 0;">
+        Enter social media text to detect possible signs of depression
+    </p>
+</section>
+
+<style>
+    .analyze-wrapper {
+        margin-top: 32px;
+        margin-bottom: 40px;
+    }
+
+    .analyze-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .analyze-card .card-body {
+        padding: 28px;
+    }
+
+    .analyze-info {
+        border: none;
+        border-radius: 18px;
+        height: 100%;
+    }
+
+    .analyze-info .card-body {
+        padding: 24px;
+    }
+
+    .analyze-info h4,
+    .analyze-card h4 {
+        font-weight: 700;
+        margin-bottom: 14px;
+    }
+
+    .analyze-info p,
+    .analyze-info li {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 14px;
+        resize: none;
+    }
+
+    .btn-predict {
+        border-radius: 12px;
+        padding: 11px;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .tips-box {
+        background: #f8f9fa;
+        border-left: 4px solid #0d6efd;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-top: 16px;
+    }
+</style>
+
+<div class="container analyze-wrapper">
+    <div class="row g-4 align-items-stretch">
+
+        <div class="col-lg-7">
+            <div class="card shadow-sm analyze-card h-100">
+                <div class="card-body">
+                    <h4>Text Analysis Form</h4>
+                    <form method="POST" action="{{ url_for('main.analyze') }}">
+                        <div class="mb-3">
+                            <label class="form-label">Enter Text for Analysis</label>
+                            <textarea
+                                name="text"
+                                class="form-control"
+                                rows="9"
+                                placeholder="Type or paste social media text here..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-predict w-100">
+                            Predict Depression
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm analyze-info h-100">
+                <div class="card-body">
+                    <h4>How It Works</h4>
+                    <p>
+                        This module analyzes the entered text using the trained Hybrid Transformer model
+                        to identify possible depression-related emotional patterns.
+                    </p>
+
+                    <ul>
+                        <li>Accepts social media style text input</li>
+                        <li>Processes text using NLP techniques</li>
+                        <li>Predicts depression or non-depression class</li>
+                        <li>Displays confidence and risk insights</li>
+                    </ul>
+
+                    <div class="tips-box">
+                        <b>Tip:</b> Enter meaningful sentences or paragraphs for better analysis output.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
